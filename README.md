@@ -8,7 +8,7 @@ Video File Manager for TV Shows, It watches for new episodes of your favorite sh
 
 > [More info](https://github.com/SiCKRAGETV/SickRage)
 
-![Sickrage](https://sickrage.tv/forums//filedata/fetch?filedataid=51)
+![Sickrage](https://raw.githubusercontent.com/vSense/docker-sickrage/master/logo.png)
 
 
 # How to choose a tag
