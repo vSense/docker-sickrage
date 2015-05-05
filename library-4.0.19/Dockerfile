@@ -1,0 +1,37 @@
+FROM alpine:3.1
+
+MAINTAINER Kevin Lefevre <klefevre@vsense.fr> (@archifleks)
+
+ENV tag v4.0.19
+
+RUN apk --update add \
+    tzdata \
+    python \
+    unrar \
+    zip \
+    libxslt \
+    && apk --update add --virtual deps \
+    tar \
+    wget \
+    python-dev \
+    build-base \
+    py-pip \
+    libxml2-dev \
+    libxslt-dev \
+    && pip install \
+    cheetah \
+    lxml \
+    && mkdir /config /downloads /sickrage \
+    && wget --no-check-certificate https://github.com/SiCKRAGETV/SickRage/archive/v4.0.19.tar.gz -O - | tar xz --strip-components 1 -C sickrage \
+    && adduser -D -h /sickrage -s /sbin/nologin -u 5001 sickrage \
+    && chown -R sickrage:sickrage /sickrage /config /downloads \
+    && apk del deps \
+    && rm -rf /var/cache/apk/*
+
+VOLUME /config /downloads
+
+EXPOSE 8081
+
+CMD ["--datadir=/config", "--nolaunch"]
+
+ENTRYPOINT ["/sickrage/SickBeard.py"]
