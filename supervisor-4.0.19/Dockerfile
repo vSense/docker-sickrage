@@ -2,7 +2,7 @@ FROM alpine:3.1
 
 MAINTAINER Kevin Lefevre <klefevre@vsense.fr> (@archifleks)
 
-ENV tag v4.0.19
+ENV PKGVER v4.0.19
 
 RUN apk --update add \
     tzdata \
@@ -23,7 +23,7 @@ RUN apk --update add \
     cheetah \
     lxml \
     && mkdir /config /downloads /sickrage \
-    && wget --no-check-certificate https://github.com/SiCKRAGETV/SickRage/archive/v4.0.19.tar.gz -O - | tar xz --strip-components 1 -C sickrage \
+    && wget --no-check-certificate https://github.com/SiCKRAGETV/SickRage/archive/"$PKGVER".tar.gz -O - | tar xz --strip-components 1 -C sickrage \
     && adduser -D -h /sickrage -s /sbin/nologin -u 5001 sickrage \
     && chown -R sickrage:sickrage /sickrage /config /downloads \
     && apk del deps \

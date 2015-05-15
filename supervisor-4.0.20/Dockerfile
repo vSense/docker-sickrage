@@ -2,10 +2,11 @@ FROM alpine:3.1
 
 MAINTAINER Kevin Lefevre <klefevre@vsense.fr> (@archifleks)
 
-ENV PKGVER v4.0.19
+ENV PKGVER v4.0.20
 
 RUN apk --update add \
     tzdata \
+    supervisor \
     python \
     unrar \
     zip \
@@ -30,8 +31,8 @@ RUN apk --update add \
 
 VOLUME /config /downloads
 
+COPY supervisord-sickrage.ini /etc/supervisor.d/supervisord-sickrage.ini
+
 EXPOSE 8081
 
-CMD ["--datadir=/config", "--nolaunch"]
-
-ENTRYPOINT ["/sickrage/SickBeard.py"]
+CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
