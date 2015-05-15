@@ -1,5 +1,3 @@
-#WORK IN PROGRESS
-
 # docker-sickrage
 
 # What is Sickrage?
