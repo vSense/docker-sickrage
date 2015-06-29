@@ -2,7 +2,7 @@ FROM alpine:3.2
 
 MAINTAINER Kevin Lefevre <klefevre@vsense.fr> (@archifleks)
 
-ENV PKGVER v4.0.23
+ENV PKGVER v4.0.29
 
 RUN apk --update add \
     tzdata \
