@@ -1,5 +1,3 @@
-# docker-sickrage
-
 # What is Sickrage?
 
 Video File Manager for TV Shows, It watches for new episodes of your favorite shows and when they are posted it does its magic. It supports newsgroup and torrents with multiples built-in trackers.
@@ -11,14 +9,13 @@ Video File Manager for TV Shows, It watches for new episodes of your favorite sh
 
 # How to choose a tag
 
-Sickrage support automatic updates in two ways :
--   Classic downloads
--   Git pull
+Available tags:
+-   latest : based on master branch
+-   develop : based on develop branch
+-   supervisord-latest : based on master branch
+-   supervisord-develop : based on develop branch
 
-The above tags provide several type of images :
-- Master and Develop : which are based on the current respective branches and upgrade using git
-- Version X.Y.Z : version based on tagged release which upgrade when a new release is out
-- With or without an init process : sickrage or supervisord as PID 1
+The above tags provide images with or without an init process (sickrage or supervisor as PID 1)
 
 Depending on how you are planning to launch sickrage you have to choose the right image
 
@@ -40,9 +37,44 @@ Sickrage is updated a lot and it is important to be up-to-date with the latest v
 
 Update management with Docker is kind of a PITA and there are differents approach.
 
+### With an init process in the container (prefered)
+
+If you are using the supervisor tag then supervisord runs as PID 1, when sickrage updates it will shuutdown itself and try to relaunch. Since it is not the only process in the container, the container will keep running. From this point there are three options :
+-   Supervisord without auto-restart : sickrage shutdown, relaunch itself, supervisord loose track of the process. Not ideal
+-   Supervisord with auto-restart : sickrage shutdowns, relaunch itself, supervisord relaunch sickrage too. You have two sickrage process running in parallels
+-   Supervisord with auto-restart and shutdown only in sickrage : the latest version has an option to disable the automatic relaunch of sickrage and only shutdown (*no_restart = 1* in config.ini)
+
+With the supervisord it is possible to use a systemd, get sickrage up-to-date and still keeping the features of systemd, just be careful to use the no-restart option in sickrage to avoid conflicts.
+
+```
+[Unit]
+Description=SickRage TV Downloader
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker pull vsense/sickrage:supervisor-latest
+ExecStart=/usr/bin/docker run --rm --name sickrage --hostname sickrage -v /srv/configs/sickrage:/config -v /srv/seedbox:/downloads vsense/sickrage:supervisor-latest
+ExecStop=/usr/bin/docker stop sickrage
+ExecReload=/usr/bin/docker restart sickrage
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+With this, systemd will launch the container, supervisord will launch sickrage, sickrage stderr/stdout will be pipe to container stdout/stdin wich will be pipe to journald. So you can use :
+-   Docker logs
+-   Journalctl
+-   Supervisorctl
+-   Systemd status
+
+And have a coherent view of the unit.
+
 ### Without init system in the container
 
-If you use the sickrage tag then sickrage runs as PID 1, when sickrage updates it will shutdown itself and try to relaunch but as there is not process in the container, the container stops. The container is stopped, to get the latest update, you should run the container with --restart=always option :
+If you use the master/develop tag then sickrage runs as PID 1, when sickrage updates it will shutdown itself and try to relaunch but as there is not process in the container, the container stops. The container is stopped, to get the latest update, you should run the container with --restart=always option :
 
     docker run -p 8081:8081 --restart=always vsense/sickrage:<yourtag>
 
@@ -61,8 +93,8 @@ This method works fine but if you are using an init system on the host (like sys
     ExecStartPre=-/usr/bin/docker stop sickrage
     ExecStartPre=-/usr/bin/docker kill sickrage
     ExecStartPre=-/usr/bin/docker rm -v -f sickrage
-    ExecStartPre=-/usr/bin/docker pull sickrage:4.0.19
-    ExecStart=/usr/bin/docker run --restart=always --name sickrage --hostname sickrage sickrage:4.0.19
+    ExecStartPre=-/usr/bin/docker pull vsense/sickrage
+    ExecStart=/usr/bin/docker run --restart=always --name sickrage --hostname sickrage vsense/sickrage
     ExecStop=/usr/bin/docker stop sickrage
     ExecStopPost=-/usr/bin/docker kill sickrage
     ExecStopPost=-/usr/bin/docker rm -v -f sickrage
@@ -71,44 +103,6 @@ This method works fine but if you are using an init system on the host (like sys
 
     [Install]
     WantedBy=multi-user.target
-
-### With an init process in the container
-
-If you are using the supervisor tag then supervisord runs as PID 1, when sickrage updates it will shuutdown itself and try to relaunch. Since it is not the only process in the container, the container will keep running. From this point there are three options :
--   Supervisord without auto-restart : sickrage shutdown, relaunch itself, supervisord loose track of the process. Not ideal
--   Supervisord with auto-restart : sickrage shutdowns, relaunch itself, supervisord relaunch sickrage too. You have two sickrage process running in parallels
--   Supervisord with auto-restart and shutdown only in sickrage : the latest version has an option to disable the automatic relaunch of sickrage and only shutdown (*no_restart = 1* in config.ini)
-
-With the supervisord it is possible to use a systemd, get sickrage up-to-date and still keeping the features of systemd, just be careful to use the no-restart option in sickrage to avoid conflicts.
-
-    [Unit]
-    Description=SickRage TV Downloader
-    After=docker.service
-    Requires=docker.service
-
-    [Service]
-    TimeoutStartSec=0
-    ExecStartPre=-/usr/bin/docker stop sickrage
-    ExecStartPre=-/usr/bin/docker kill sickrage
-    ExecStartPre=-/usr/bin/docker rm -v -f sickrage
-    ExecStartPre=-/usr/bin/docker pull sickrage:4.0.19
-    ExecStart=/usr/bin/docker run --name sickrage --hostname sickrage sickrage:4.0.19
-    ExecStop=/usr/bin/docker stop sickrage
-    ExecStopPost=-/usr/bin/docker kill sickrage
-    ExecStopPost=-/usr/bin/docker rm -v -f sickrage
-    ExecReload=/usr/bin/docker restart sickrage
-    RestartSec=5
-
-    [Install]
-    WantedBy=multi-user.target
-
-With this, systemd will launch the container, supervisord will launch sickrage, sickrage stderr/stdout will be pipe to container stdout/stdin wich wil be pipe to journald. So you can use :
--   Docker logs
--   Journalctl
--   Supervisorctl
--   Systemd status
-
-And have a coherent view of the unit.
 
 # Overriding
 
