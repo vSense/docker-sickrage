@@ -10,10 +10,10 @@ Video File Manager for TV Shows, It watches for new episodes of your favorite sh
 # How to choose a tag
 
 Available tags:
--   latest : based on master branch
--   develop : based on develop branch
--   supervisord-latest : based on master branch
--   supervisord-develop : based on develop branch
+-   `latest` : based on master branch
+-   `develop` : based on develop branch
+-   `supervisord-latest` : based on master branch
+-   `supervisord-develop` : based on develop branch
 
 The above tags provide images with or without an init process (sickrage or supervisor as PID 1)
 
@@ -45,15 +45,15 @@ To use an on-host config (for persistent configuration if you do not want to dea
 
 To mount your download folder (you will probably need to do that anyway) :
 
-    docker run --restart=always --name sickrage --hostname sickrage vsense/sickrage -v /srv/seedbox:/downloads vsense/sickrage
+    docker run --restart=always --name sickrage --hostname sickrage  -v /srv/configs/sickrage:/config -v /srv/seedbox:/downloads vsense/sickrage
 
 You can even override sickrage directory if you prefer to git clone on you host for whatever reason :
 
-    docker run --restart=always --name sickrage --hostname sickrage vsense/sickrage -v /srv/sickrage:/sickrage vsense/sickrage
+    docker run --restart=always --name sickrage --hostname sickrage -v /srv/sickrage:/sickrage vsense/sickrage
 
 And you can combin the commands above as you like :
 
-    docker run --restart=always --name sickrage --hostname sickrage vsense/sickrage -v /srv/seedbox:/downloads -v /srv/sickrage:/sickrage -v /srv/configs/sickrage:/config vsense/sickrage
+    docker run --restart=always --name sickrage --hostname sickrage -v /srv/seedbox:/downloads -v /srv/sickrage:/sickrage -v /srv/configs/sickrage:/config vsense/sickrage
 
 ## Thought about auto update and init systems
 
