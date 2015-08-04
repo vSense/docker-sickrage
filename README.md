@@ -49,11 +49,11 @@ To mount your download folder (you will probably need to do that anyway) :
 
 You can even override sickrage directory if you prefer to git clone on you host for whatever reason :
 
-    docker run --restart=always --name sickrage --hostname sickrage vsense/sickrage -v /srv/sickrage:/sickrage vsense/sickrage
+    docker run --restart=always --name sickrage --hostname sickrage -v /srv/sickrage:/sickrage vsense/sickrage
 
 And you can combin the commands above as you like :
 
-    docker run --restart=always --name sickrage --hostname sickrage vsense/sickrage -v /srv/seedbox:/downloads -v /srv/sickrage:/sickrage -v /srv/configs/sickrage:/config vsense/sickrage
+    docker run --restart=always --name sickrage --hostname sickrage -v /srv/seedbox:/downloads -v /srv/sickrage:/sickrage -v /srv/configs/sickrage:/config vsense/sickrage
 
 ## Thought about auto update and init systems
 
