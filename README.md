@@ -10,10 +10,10 @@ Video File Manager for TV Shows, It watches for new episodes of your favorite sh
 # How to choose a tag
 
 Available tags:
--   latest : based on master branch
--   develop : based on develop branch
--   supervisord-latest : based on master branch
--   supervisord-develop : based on develop branch
+-   `latest` : based on master branch
+-   `develop` : based on develop branch
+-   `supervisord-latest` : based on master branch
+-   `supervisord-develop` : based on develop branch
 
 The above tags provide images with or without an init process (sickrage or supervisor as PID 1)
 
