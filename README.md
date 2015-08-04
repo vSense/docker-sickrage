@@ -45,7 +45,7 @@ To use an on-host config (for persistent configuration if you do not want to dea
 
 To mount your download folder (you will probably need to do that anyway) :
 
-    docker run --restart=always --name sickrage --hostname sickrage vsense/sickrage -v /srv/seedbox:/downloads vsense/sickrage
+    docker run --restart=always --name sickrage --hostname sickrage  -v /srv/configs/sickrage:/config -v /srv/seedbox:/downloads vsense/sickrage
 
 You can even override sickrage directory if you prefer to git clone on you host for whatever reason :
 
