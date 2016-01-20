@@ -12,10 +12,10 @@ RUN apk --update add \
     unrar \
     zip \
     libxslt \
+    py-pip
     && apk --update add --virtual deps \
     python-dev \
     build-base \
-    py-pip \
     libxml2-dev \
     libxslt-dev \
     && pip install \
