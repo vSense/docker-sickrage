@@ -2,7 +2,7 @@
 -
 -MAINTAINER Kevin Lefevre <klefevre@vsense.fr> (@archifleks)
 -
--ENV PKGVER v4.2.5
+-ENV PKGVER 4.2.5
 -
 -RUN apk --update add \
 -    tzdata \
