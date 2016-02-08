@@ -7,12 +7,12 @@ ENV BRANCH master
 RUN apk --update add \
     git \
     tzdata \
-    python \
     supervisor \
+    python \
     unrar \
     zip \
     libxslt \
-    py-pip
+    py-pip \
     && apk --update add --virtual deps \
     python-dev \
     build-base \
