@@ -21,7 +21,7 @@ RUN apk --update add \
     && pip install \
     cheetah \
     lxml \
-    && git clone -b $BRANCH --single-branch https://github.com/SiCKRAGETV/SickRage /sickrage \
+    && git clone -b $BRANCH --single-branch https://github.com/SickRage/SickRage.git /sickrage \
     && mkdir /config /downloads \
     && adduser -D -h /sickrage -s /sbin/nologin -u 5001 sickrage \
     && chown -R sickrage:sickrage /sickrage /config /downloads \
