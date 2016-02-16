@@ -31,6 +31,8 @@ VOLUME /config /downloads
 
 EXPOSE 8081
 
+USER sickrage
+
 CMD ["--datadir=/config", "--nolaunch"]
 
 ENTRYPOINT ["/sickrage/SickBeard.py"]
