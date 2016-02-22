@@ -35,4 +35,4 @@ USER sickrage
 
 CMD ["--datadir=/config", "--nolaunch"]
 
-ENTRYPOINT ["/sickrage/SickBeard.py"]
+ENTRYPOINT ["/usr/bin/env","python2","/sickrage/SickBeard.py"]
