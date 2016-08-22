@@ -12,13 +12,13 @@ RUN apk --update add \
     zip \
     libxslt \
     py-pip \
+    py-lxml \
     && apk --update add --virtual deps \
     python-dev \
     libxml2-dev \
     libxslt-dev \
     && pip install \
     cheetah \
-    lxml \
     && git clone -b $BRANCH --single-branch https://github.com/SickRage/SickRage.git /sickrage \
     && mkdir /config /downloads \
     && adduser -D -h /sickrage -s /sbin/nologin -u 5001 sickrage \
