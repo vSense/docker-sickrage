@@ -14,7 +14,6 @@ RUN apk --update add \
     py-pip \
     && apk --update add --virtual deps \
     python-dev \
-    build-base \
     libxml2-dev \
     libxslt-dev \
     && pip install \
