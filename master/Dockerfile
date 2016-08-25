@@ -1,4 +1,4 @@
-FROM armhf/alpine
+FROM vsense/baseimage:armhf-alpine
 
 MAINTAINER Kevin Lefevre <klefevre@vsense.fr> (@archifleks)
 
