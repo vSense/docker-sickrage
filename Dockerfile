@@ -2,7 +2,7 @@ FROM vsense/baseimage:armhf-alpine
 
 MAINTAINER Kevin Lefevre <klefevre@vsense.fr> (@archifleks)
 
-ENV BRANCH master
+ENV BRANCH develop
 
 RUN apk --update add \
     git \
