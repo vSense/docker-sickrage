@@ -21,7 +21,9 @@ Available tags:
 
 Run Sickrage :
 
+```
 docker run vsense/sickrage:<yourtag>
+```
 
 You can test it by visiting `http://container-ip:8081` in a browser or, if you need access outside the host, on port 8081 :
 
